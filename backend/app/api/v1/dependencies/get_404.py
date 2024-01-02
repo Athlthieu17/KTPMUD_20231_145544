@@ -31,8 +31,9 @@ def get_employee_or_404(
     if not employee:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Specified user was not found.",
+            detail="Specified employee was not found.",
         )
+
     return employee
 
 def get_client_or_404(

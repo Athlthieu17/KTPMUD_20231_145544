@@ -27,7 +27,7 @@ class Employee(Base):
     salary = Column(Integer, nullable=False)
     ngaybatdaucongtac = Column(DATE, nullable=False)
     ngayketthuccongtac = Column(DATE)
-    owner_user = Column(Integer, ForeignKey("users.id", ondelete= "CASCADE"), nullable=False)
+    owner_user = Column(Integer, ForeignKey("users.manguoidung", ondelete= "CASCADE"), nullable=False)
 
     owner = relationship("User")
 
@@ -36,7 +36,7 @@ class Client(Base):
 
     makh = Column(String(20), primary_key=True, nullable=False)
     address = Column(String(255))
-    owner_user = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    owner_user = Column(Integer, ForeignKey("users.manguoidung", ondelete="CASCADE"), nullable=False)
 
     owner = relationship("User")
 

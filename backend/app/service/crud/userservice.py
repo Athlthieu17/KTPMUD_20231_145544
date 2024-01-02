@@ -6,8 +6,8 @@ from app.models import User
 from app.schemas.user import UserBase, UserUpdate, UserUpdateInfo
 from app.service.passwordservice import get_password_hash, verify_password
 
-def get(db_session: Session, id_: int) -> Optional[UserBase]:
-    return db_session.query(User).filter(User.id == id_).first()
+def get(db_session: Session, manguoidung_: int) -> Optional[UserBase]:
+    return db_session.query(User).filter(User.manguoidung == manguoidung_).first()
 
 
 def get_by_email(db_session: Session, email: str) -> Optional[User]:
@@ -28,8 +28,8 @@ def get_multiple(
     return db_session.query(User).offset(offset).limit(limit).all()
 
 
-async def create(db_session: Session, user_in: UserBase):
-    db_obj = User(**user_in.model_dump())
+async def create(db_session: Session, user_in: UserBase, role_ : str):
+    db_obj = User(**user_in.model_dump(), role = role_)
     db_session.add(db_obj)
     db_session.commit()
     db_session.refresh(db_obj)
@@ -53,16 +53,17 @@ def update_password(db_session: Session, user_in: User, user_change: UserUpdate)
 
     return "Update password success"
 
-def update(db_session: Session, user_change: UserUpdateInfo, id: int):
-    user_query = db_session.query(User).filter(User.id == id)
+def update(db_session: Session, user_change: UserUpdateInfo, manguoidung: int):
+    user_query = db_session.query(User).filter(User.manguoidung == manguoidung)
+
+    user_change.password = get_password_hash(user_change.password)
 
     user_query.update(user_change.model_dump(), synchronize_session=False)
     db_session.commit()
-
     return user_query.first()
 
 
-def delete(db_session: Session, id_: int):
-    db_session.query(User).filter(User.id == id_).delete()
+def delete(db_session: Session, manguoidung_: int):
+    db_session.query(User).filter(User.manguoidung == manguoidung_).delete()
     db_session.commit()
-    return "Delete user id = {id} success".format(id=id_)
+    return "Delete user manguoidung = {manguoidung} success".format(manguoidung=manguoidung_)
