@@ -8,9 +8,9 @@ class UserBase(BaseModel):
     fullname: Optional[str]
     username: str
     password: str
-    gender : Optional[bool]
-    dateofbirth : Optional[date] = "2023-12-23"
-    phonenumber : Optional[str]
+    gender: Optional[bool]
+    dateofbirth: Optional[date] = "2023-12-23"
+    phonenumber: Optional[str]
     role: Optional[str] = None
     is_active: Optional[bool] = True
 

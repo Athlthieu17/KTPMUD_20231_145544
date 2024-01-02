@@ -20,13 +20,13 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table("phiphat",
-                    sa.Column("id", sa.Integer(), nullable=False),
+                    sa.Column("maphiphat", sa.String(20), nullable=False),
                     sa.Column("phiphat", sa.Integer()),
                     sa.Column("lydo", sa.String(), nullable=False),
-                    sa.Column("owner_detail", sa.Integer(), nullable=False),
-                    sa.PrimaryKeyConstraint("id"))
+                    sa.Column("owner_detail", sa.String(20), nullable=False),
+                    sa.PrimaryKeyConstraint("maphiphat"))
     op.create_foreign_key('phiphat_fk', source_table="phiphat", referent_table="detail_event",
-                          local_cols=['owner_detail'], remote_cols=['id'], ondelete="CASCADE")
+                          local_cols=['owner_detail'], remote_cols=['mactct'], ondelete="CASCADE")
 
 def downgrade() -> None:
     op.drop_constraint("phiphat_fk","phiphat")

@@ -20,15 +20,15 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table("employee",
-                    sa.Column("manv", sa.String(), nullable=False),
+                    sa.Column("manv", sa.String(20), nullable=False),
                     sa.Column("salary", sa.Integer(), nullable=False),
                     sa.Column("ngaybatdaucongtac", sa.DATE(), nullable=False),
-                    sa.Column("ngayketthuccongtac", sa.DATE(), nullable=False),
-                    sa.Column("owner_id", sa.Integer(), nullable=False),
+                    sa.Column("ngayketthuccongtac", sa.DATE()),
+                    sa.Column("owner_user", sa.Integer, nullable=False),
                     sa.PrimaryKeyConstraint("manv"))
 
     op.create_foreign_key("employee_fk",source_table= "employee", referent_table="users",
-                          local_cols=['owner_id'], remote_cols=['id'], ondelete="CASCADE")
+                          local_cols=['owner_user'], remote_cols=['manguoidung'], ondelete="CASCADE")
 
 
 def downgrade() -> None:

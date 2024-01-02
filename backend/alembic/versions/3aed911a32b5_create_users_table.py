@@ -20,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table("users",
-                    sa.Column("id", sa.Integer(), nullable=False, autoincrement=True),
+                    sa.Column("manguoidung", sa.Integer, nullable=False, autoincrement=True),
                     sa.Column("email", sa.String(255), nullable=False, unique=True),
                     sa.Column("fullname", sa.String(255), nullable=False),
                     sa.Column("username", sa.String(255), nullable=False, unique=True),
@@ -32,7 +32,7 @@ def upgrade() -> None:
                               server_default=sa.text('now()')),
                     sa.Column("role", sa.String(), nullable=False),
                     sa.Column("is_active", sa.Boolean, default=False),
-                    sa.PrimaryKeyConstraint("id"))
+                    sa.PrimaryKeyConstraint("manguoidung"))
 
 def downgrade() -> None:
     op.drop_table("users")

@@ -20,14 +20,14 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     op.create_table('contract',
-                    sa.Column("mahopdong", sa.String(50), nullable=False),
+                    sa.Column("mahopdong", sa.String(20), nullable=False),
                     sa.Column("giaidoan", sa.Integer(), nullable=False),
                     sa.Column("phithanhtoan", sa.Integer(), nullable=False),
                     sa.Column("motaphi", sa.String(100)),
                     sa.Column("pt_thanhtoan", sa.String(50), nullable=False),
                     sa.Column("ngaytttheohd", sa.DATE(), nullable=False),
                     sa.Column("ngayttthucte", sa.DATE(), nullable=False),
-                    sa.Column("owner", sa.String(), nullable=False),
+                    sa.Column("owner", sa.String(20), nullable=False),
                     sa.PrimaryKeyConstraint("mahopdong"))
 
     op.create_foreign_key('hopdong_fk', source_table="contract", referent_table="event",
