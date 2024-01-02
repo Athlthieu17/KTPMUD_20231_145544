@@ -13,8 +13,8 @@ def get_multiple(
     return db_session.query(models.Client).offset(offset).limit(limit).all()
 
 
-def create(db_session: Session, client_in: ClientBase, owner_id_get: int):
-    db_obj = models.Client(**client_in.model_dump(), owner_id=owner_id_get)
+def create(db_session: Session, client_in: ClientBase, owner_user_get: int):
+    db_obj = models.Client(**client_in.model_dump(), owner_user=owner_user_get)
     db_session.add(db_obj)
     db_session.commit()
     db_session.refresh(db_obj)
@@ -32,6 +32,6 @@ def update(db_session: Session, client_update: ClientUpdate, makh: str):
 
 def delete(db_session: Session, makh: str):
     client = get(db_session=db_session, makh=makh)
-    db_session.query(models.User).filter(models.User.id == client.owner_id).delete()
+    db_session.query(models.User).filter(models.User.manguoidung == client.owner_user).delete()
     db_session.commit()
     return "Delete client makh = {makh} success".format(makh=makh)

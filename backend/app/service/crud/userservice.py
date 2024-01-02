@@ -41,7 +41,7 @@ def update_password(db_session: Session, user_in: User, user_change: UserUpdate)
     if user_in is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
 
-    user_model = db_session.query(User).filter(User.id == user_in.get('id')).first()
+    user_model = db_session.query(User).filter(User.manguoidung == user_in.get('manguoidung')).first()
     if not verify_password(user_change.password, user_model.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not verify password')
 
