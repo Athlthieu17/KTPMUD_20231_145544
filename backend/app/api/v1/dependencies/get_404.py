@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException, Path, status
 from app.database import get_db
 from app import models
-from app.service.crud import userservice, employeeservice, clientservice, eventservice, detaileventservice, contractservice
+from app.service.crud import userservice, employeeservice, clientservice, eventservice, detaileventservice, contractservice, feeservice
 
 
 def get_user_or_404(
@@ -99,3 +99,18 @@ def get_contract_or_404(
             detail="Specified contract was not found.",
         )
     return contract
+
+def get_fee_or_404(
+    db_session: Session = Depends(get_db),
+    maphiphat: str = Path(..., alias="maphiphat"),
+):
+    """
+    Route dependency that retrieves a event by maphiphat or raises 404.
+    """
+    fee_event = feeservice.get(db_session=db_session, maphiphat=maphiphat)
+    if not fee_event:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Specified fee was not found.",
+        )
+    return fee_event
