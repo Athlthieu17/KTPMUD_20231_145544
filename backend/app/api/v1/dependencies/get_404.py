@@ -69,13 +69,12 @@ def get_event_or_404(
 
 def get_detail_event_or_404(
     db_session: Session = Depends(get_db),
-    owner_event: str = Path(..., alias="owner_event"),
-    id: int = Path(..., alias="id", gt=0),
+    mactct: str = Path(..., alias="mactct")
 ):
     """
     Route dependency that retrieves a detail_event by mact and id or raises 404.
     """
-    detail_event = detaileventservice.get(db_session=db_session, owner_event=owner_event, id=id)
+    detail_event = detaileventservice.get(db_session=db_session, mactct=mactct)
     if not detail_event:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

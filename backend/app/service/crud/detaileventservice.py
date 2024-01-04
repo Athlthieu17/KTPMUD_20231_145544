@@ -6,8 +6,8 @@ from app import models
 from app.schemas.detail_event import DetailEventCreate, DetailEventUpdate
 
 
-def get(db_session: Session, owner_event: str, id: int = Path(..., gt=0)):
-    return db_session.query(models.DetailEvent).filter(models.DetailEvent.id==id).first()
+def get(db_session: Session, mactct: str):
+    return db_session.query(models.DetailEvent).filter(models.DetailEvent.mactct==mactct).first()
 
 
 def get_by_mact(db_session: Session, owner_event: str):
@@ -26,15 +26,15 @@ def create(db_session: Session, detail_event: DetailEventCreate):
     return db_obj
 
 
-def update(db_session: Session, detail_event_update: DetailEventUpdate, id: int):
-    detail_event_query = db_session.query(models.DetailEvent).filter(models.DetailEvent.id == id)
+def update(db_session: Session, detail_event_update: DetailEventUpdate, mactct: str):
+    detail_event_query = db_session.query(models.DetailEvent).filter(models.DetailEvent.mactct == mactct)
 
     detail_event_query.update(detail_event_update.model_dump(), synchronize_session=False)
     db_session.commit()
 
     return detail_event_query.first()
 
-def delete(db_session: Session, mact: str):
-    db_session.query(models.Event).filter(models.Event.mact == mact).delete()
+def delete(db_session: Session, mactct: str):
+    db_session.query(models.DetailEvent).filter(models.DetailEvent.mactct == mactct).delete()
     db_session.commit()
-    return "Delete event have mact = {mact} success".format(mact=mact)
+    return "Delete event have mactct = {mactct} success".format(mactct=mactct)

@@ -24,6 +24,14 @@ async def create_fee(employee_role: user_dependency, db: db_dependency, fee_even
 
     return fee_event
 
+@router.get("/{maphiphat}", status_code=status.HTTP_200_OK)
+def get_fee(employee_role: user_dependency, db: db_dependency, fee_get: models.PhiPhat = Depends(get_fee_or_404)):
+    if employee_role is None or employee_role.get('role') != 'employee':
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
+    fee_event = feeservice.get(db_session=db, maphiphat=fee_get.maphiphat)
+
+    return fee_event
+
 @router.put("/{maphiphat}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_fee(employee_role: user_dependency, db: db_dependency, fee_update: fee_event.FeeUpdate, fee_get: models.PhiPhat = Depends(get_fee_or_404)):
     if employee_role is None or employee_role.get('role') != "employee":

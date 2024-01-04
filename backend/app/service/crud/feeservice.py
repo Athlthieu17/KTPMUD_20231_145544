@@ -5,7 +5,7 @@ from app.schemas.fee_event import FeeBase, FeeUpdate
 
 
 def get(db_session: Session, maphiphat: str):
-    return db_session.query(models.PhiPhat).filter(models.PhiPhat.maphiphat==maphiphat)
+    return db_session.query(models.PhiPhat).filter(models.PhiPhat.maphiphat == maphiphat).first()
 
 
 

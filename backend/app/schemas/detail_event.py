@@ -5,6 +5,7 @@ from datetime import date
 from .event import EventOutOfDetail
 
 class DetailBase(BaseModel):
+    mactct: Optional[str]
     songuoithamgia: conint(gt=0)
     start_date: Optional[date]
     end_date: Optional[date]
@@ -20,7 +21,7 @@ class DetailEventCreate(DetailBase):
 
 
 class DetailOut(BaseModel):
-    id: int
+    mactct: Optional[str]
     songuoithamgia: int
     start_date: date
     end_date: date
@@ -29,8 +30,8 @@ class DetailOut(BaseModel):
     original: EventOutOfDetail
 
 class FullDetailEvent(BaseModel):
-    id: int
-    songuoithamgia: int
+    mactct: Optional[str]
+    songuoithamgia: int = conint(gt=0)
     detail: str
     start_date: date
     end_date: date
