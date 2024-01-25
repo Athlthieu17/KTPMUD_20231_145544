@@ -16,7 +16,7 @@ router = APIRouter()
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=employee.Employee)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=employee.EmployeeOutCreate)
 async def create_employee(db: db_dependency, create_employee_request: employee.EmployeeCreate):
     # hash the password - user.password
     hashed_password = passwordservice.get_password_hash(create_employee_request.users.password)
@@ -39,27 +39,27 @@ async def create_employee(db: db_dependency, create_employee_request: employee.E
             detail="phonenumber already exists",
         )
 
-    user = await userservice.create(db_session=db, user_in=create_employee_request.users)
-    employee_create = employeeservice.create(db_session=db, employee_in=create_employee_request.employee, owner_id_get=user.id)
+    user = await userservice.create(db_session=db, user_in=create_employee_request.users, role_= 'employee')
+    employee_create = employeeservice.create(db_session=db, employee_in=create_employee_request.employee, owner_user_get=user.manguoidung)
 
     return employee_create
 
-@router.get("/information/{manv}", status_code= status.HTTP_200_OK)
+@router.get("/information/{manv}", status_code= status.HTTP_200_OK, response_model=employee.EmployeeOut)
 def get_employee_by_manv(employee_get: models.Employee = Depends(get_employee_or_404)):
     """
     Retrieve details about a specific employee.
     """
     return employee_get
 
-@router.get("/all_employee", status_code=status.HTTP_200_OK,response_model=List[employee.Employee])
+@router.get("/all_employee", status_code=status.HTTP_200_OK,response_model=List[employee.EmployeeOut])
 async def get_all_employee(db: db_dependency):
     all_employee = employeeservice.get_multiple(db_session=db)
     return all_employee
 
 @router.put("/update_info/{manv}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_information_employee(db: db_dependency, employee_update: employee.EmployeeUpdate, employee_get_manv: models.Employee = Depends(get_employee_or_404)):
-    id = employee_get_manv.owner_id
-    user_update_info = userservice.update(db_session=db,user_change=employee_update.users, id=id)
+    manguoidung = employee_get_manv.owner_user
+    user_update_info = userservice.update(db_session=db,user_change=employee_update.users, manguoidung=manguoidung)
     employee_update_info = employeeservice.update(db_session=db,employee_update=employee_update.employee, manv=employee_get_manv.manv)
 
     return employee_update_info

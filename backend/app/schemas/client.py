@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Union, Optional
-from .user import UserBase, UserOut, UserUpdateInfo
+from .user import UserBase, UserOut, UserUpdateInfo, UserCreateInfo
 class ClientBase(BaseModel):
     makh: Optional[str] = "KH0001"
     address: Optional[str]
@@ -11,7 +11,7 @@ class ClientUpdateInfo(BaseModel):
 
 
 class ClientCreate(BaseModel):
-    users: UserBase
+    users: UserCreateInfo
     client: ClientBase
 
 class ClientUpdate(BaseModel):
@@ -20,6 +20,7 @@ class ClientUpdate(BaseModel):
 
 class ClientOut(BaseModel):
     makh: str
+    address: str
     owner: UserOut
 
 class ClientOutEvent(BaseModel):

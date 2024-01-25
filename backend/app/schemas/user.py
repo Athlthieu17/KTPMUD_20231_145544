@@ -8,28 +8,46 @@ class UserBase(BaseModel):
     fullname: Optional[str]
     username: str
     password: str
-    gender : Optional[bool]
-    dateofbirth : Optional[date] = "2023-12-23"
-    phonenumber : Optional[str]
-    role: Optional[str] = None
+    gender: Optional[bool]
+    dateofbirth: Optional[date] = "2023-12-23"
+    phonenumber: Optional[str]
     is_active: Optional[bool] = True
+
+
+class UserCreateInfo(BaseModel):
+    email: Optional[EmailStr] = None
+    fullname: Optional[str]
+    username: str
+    password: str
+    gender: Optional[bool]
+    dateofbirth: Optional[date] = "2023-12-23"
+    phonenumber: Optional[str]
+
 
 class UserUpdateInfo(BaseModel):
     email: EmailStr
     fullname: str
     username: str
+    password: str
     gender: bool
     dateofbirth: date
     phonenumber: str
-    is_active: Optional[bool] = True
 
 
-class UserOut(BaseModel):
-    id: int
+class UserOutCreate(BaseModel):
+    manguoidung: int
     username: str
     email: Optional[EmailStr] = None
-    is_active: Optional[bool] = True
     role: Optional[str] = None
+
+class UserOut(BaseModel):
+    email: EmailStr
+    fullname: str
+    username: str
+    password: str
+    gender: bool
+    dateofbirth: date
+    phonenumber: str
 
 class UserCreate(UserBase):
     username: str
@@ -41,7 +59,7 @@ class UserUpdate(BaseModel):
 
 
 class UserInDBBase(UserBase):
-    id: Optional[int] = None
+    manguoidung: Optional[int] = None
     created_at: datetime
 
     class Config:

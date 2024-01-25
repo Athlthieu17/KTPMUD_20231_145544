@@ -42,8 +42,8 @@ async def create_client(db: db_dependency, employee_role: user_dependency, creat
             detail="phonenumber already exists",
         )
 
-    user = await userservice.create(db_session=db, user_in=create_client_request.users)
-    client_create = clientservice.create(db_session=db, client_in=create_client_request.client, owner_id_get=user.id)
+    user = await userservice.create(db_session=db, user_in=create_client_request.users, role_='client')
+    client_create = clientservice.create(db_session=db, client_in=create_client_request.client, owner_user_get=user.manguoidung)
 
     return client_create
 
@@ -54,8 +54,8 @@ async def update_information_client(employee_role: user_dependency, db: db_depen
 
 
 
-    id = client_get.owner_id
-    user_update_info = userservice.update(db_session=db, user_change=client_update.users, id=id)
+    manguoidung = client_get.owner_user
+    user_update_info = userservice.update(db_session=db, user_change=client_update.users, manguoidung=manguoidung)
     client_update_info = clientservice.update(db_session=db,
                                               client_update=client_update.client,
                                               makh=client_get.makh)

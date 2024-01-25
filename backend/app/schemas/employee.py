@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
 from datetime import date
-from .user import UserOut, UserBase, UserUpdateInfo
+from .user import UserOutCreate, UserCreateInfo, UserUpdateInfo, UserOut
 class EmployeeBase(BaseModel):
     manv: str = "NV0001"
     salary: Optional[int]
@@ -18,22 +18,37 @@ class EmployeeUpdateInfo(BaseModel):
 
 
 
-class Employee(BaseModel):
+class EmployeeOutCreate(BaseModel):
     manv: str
     salary: int
     ngaybatdaucongtac: date
-    ngayketthuccongtac: date
+
+    owner: UserOutCreate
+    class Config:
+        from_attributes = True
+
+
+class EmployeeOut(BaseModel):
+    manv: str
+    ngaybatdaucongtac: date
+    ngayketthuccongtac: Union[date, None] = None
 
     owner: UserOut
     class Config:
         from_attributes = True
 
-class EmployeeOut(EmployeeBase):
-    pass
+
+class EmployeeCreateInfo(BaseModel):
+    manv: str = "NV0001"
+    salary: int
+    ngaybatdaucongtac: date
+
+
 
 class EmployeeCreate(BaseModel):
-    users: UserBase
-    employee: EmployeeBase
+    users: UserCreateInfo
+    employee: EmployeeCreateInfo
+
 
 class EmployeeUpdate(BaseModel):
     users: UserUpdateInfo

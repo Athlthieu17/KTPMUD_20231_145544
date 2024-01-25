@@ -25,7 +25,7 @@ def upgrade() -> None:
                     sa.Column("detail", sa.String(100)),
                     sa.Column("ngaybatdau", sa.DATE(), nullable=False),
                     sa.Column("ngayketthuc", sa.DATE(), nullable=False),
-                    sa.Column("owner", sa.String(), nullable=False),
+                    sa.Column("owner", sa.String(20), nullable=False),
                     sa.PrimaryKeyConstraint('mact')
                     )
     op.create_foreign_key("event_fk", source_table="event", referent_table="client",
