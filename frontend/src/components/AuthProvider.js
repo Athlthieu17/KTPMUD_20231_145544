@@ -7,7 +7,7 @@ export default function AuthProvider({
   isSignedIn,
 }) {
   // Uses `isSignedIn` prop to determine whether or not to render a user
-  const [user] = useState(isSignedIn ? { id: 1, userName: 'khanhbatluc', image: Avatar } : null);
+  const [user] = useState(isSignedIn ? { id: 1, userName: 'kimtrang', image: Avatar } : null);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
