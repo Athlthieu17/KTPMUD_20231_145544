@@ -1,0 +1,29 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  box-sizing: border-box;
+  /* font-size: 15px; */
+}
+
+.App{
+  background-color: #E7E3E3;
+}
+/* variables.css */
+
+:root {
+  --black-color: #000;
+  --white-color: #fff;
+  --font-family: 'Poppins';
+  --font-family-second: 'Notable';
+  --soft-dark-color: #323232;
+  --soft-gray-color: #BFBCBC;
+  --yellow-color: #F3E034;
+  /* Add other global variables here */
+}
+
+.flex{
+  display: flex;
+  align-items:center;
+  justify-content: center;
+}
