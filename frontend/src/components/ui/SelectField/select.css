@@ -1,0 +1,11 @@
+.select-field {
+
+}
+
+.select-field select {
+    font-family: var(--font-family);
+    height: 40px;
+    border-radius: 5px;
+    outline: none;
+    padding: 0 5px;
+}

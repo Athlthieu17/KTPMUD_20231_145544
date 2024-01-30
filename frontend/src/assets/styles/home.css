@@ -1,0 +1,73 @@
+.banner{
+    position: relative;
+}
+
+.banner img{
+    height: 669px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.banner .banner-content{
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.banner .banner-content .banner-content__title{
+    color: var(--yellow-color);
+    font-size: 48px;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.banner .banner-content .banner-content__subtitle{
+    color: var(--white-color);
+    font-size: 34px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.banner {
+    color: var(--white-color);
+    font-size: 34px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.banner .button-banner{
+    font-size: 30px;
+    margin-top: 30px;
+    width: 150px;
+}
+
+.event{
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.event-description{
+    text-align: center;
+}
+
+.list-option{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+    margin-bottom: 70px;
+}
+
+.list-option .option-item .option-item__image{
+    height: 80px;
+    width: 80px;
+    object-fit: contain;
+}
+
+.list-option .option-item .option-item__if{
+    text-align: center;
+}

@@ -1,0 +1,6 @@
+.button-container button{
+    padding: 10px;
+    min-width: fit-content;
+    border: none;
+    cursor: pointer;
+}

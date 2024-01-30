@@ -1,0 +1,26 @@
+.text-field{
+    margin: 10px 0;
+}
+
+.text-field.flex-row{
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.text-field.flex-row label {
+    width: 200px;
+}
+
+.text-field .text-field__label.block{
+    display: block;
+}
+
+.text-field .text-field__input{
+    padding: 5px;
+    min-width: 200px;
+    outline: none;
+}

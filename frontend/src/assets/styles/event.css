@@ -1,0 +1,15 @@
+.event-container{
+    margin: 13px 70px;
+    height: 100vh;
+}
+
+.event-container .event-filter{
+    justify-content: flex-end;
+}
+
+.event-container .list-event{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
