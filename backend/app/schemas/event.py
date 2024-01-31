@@ -13,8 +13,7 @@ class EventBase(BaseModel):
 
 
 class EventCreate(EventBase):
-    owner: Optional[str] = "KH0001"
-
+    detail: Optional[str] = None
     class Config:
         from_attributes = True
 

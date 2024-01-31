@@ -29,7 +29,7 @@ class Event(Base):
     detail = Column(String(100))
     ngaybatdau = Column(DATE, nullable=False)
     ngayketthuc = Column(DATE, nullable=False)
-    owner = Column(String(20), ForeignKey("users.manguoidung", ondelete="CASCADE"), nullable=False)
+    owner = Column(Integer, ForeignKey("users.manguoidung", ondelete="CASCADE"), nullable=False)
 
     owner_event = relationship("User")
 

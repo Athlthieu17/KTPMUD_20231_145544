@@ -7,12 +7,12 @@ from app.service.crud import userservice, eventservice, detaileventservice, cont
 
 def get_user_or_404(
     db_session: Session = Depends(get_db),
-    user_id: int = Path(..., alias="id", ge=1),
+    manguoidung: int = Path(..., alias="id", ge=1),
 ) -> models.User:
     """
     Route dependency that retrieves a user by id or raises 404.
     """
-    user = userservice.get(db_session=db_session, id_=user_id)
+    user = userservice.get(db_session=db_session, manguoidung_=manguoidung)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

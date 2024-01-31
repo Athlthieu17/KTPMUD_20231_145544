@@ -15,48 +15,38 @@ router = APIRouter()
 
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
-@router.post("", status_code= status.HTTP_201_CREATED, response_model=event.EventOut)
-async def create_event(employee_role: user_dependency, db: db_dependency, create_event_request: event.EventCreate):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
-    event = eventservice.create(db_session=db, event=create_event_request)
+@router.post("", status_code= status.HTTP_201_CREATED)
+async def create_event(user_in: user_dependency, db: db_dependency, create_event_request: event.EventCreate):
+    if eventservice.get(db_session=db, mact=create_event_request.mact):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Event address already exists",
+        )
+    event = eventservice.create(db_session=db, event=create_event_request, owner=user_in.get('manguoidung'))
     return event
 
 
 @router.get("/information/{mact}", status_code= status.HTTP_200_OK, response_model= event.EventOut)
-def get_event_by_mact(employee_role: user_dependency, event_get: models.Event = Depends(get_event_or_404)):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
-    """
-    Retrieve about an event.
-    """
+def get_event_by_mact(event_get: models.Event = Depends(get_event_or_404)):
     return event_get
 
 
-@router.get("/all_event", status_code=status.HTTP_200_OK, response_model=event.EventOut)
-async def get_all_event(employee_role: user_dependency, db: db_dependency):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
+@router.get("/all_event", status_code=status.HTTP_200_OK)
+async def get_all_event(user_in: user_dependency, db: db_dependency):
 
-    all_event = eventservice.get_multiple(db_session=db)
+
+    all_event = eventservice.get_multiple(db_session=db, owner=user_in.get('manguoidung'))
 
     return all_event
 
 
 @router.get("/all/{mact}", status_code=status.HTTP_200_OK)
-def get_all_detail_of_event(db: db_dependency, employee_role: user_dependency, mact: str):
-    if employee_role is None or employee_role.get('role') != 'employee':
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
-
+def get_all_detail_of_event(db: db_dependency, mact: str):
     return detaileventservice.get_by_mact(db_session=db, owner_event=mact)
 
 
 @router.put("/{mact}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_event(employee_role: user_dependency, db: db_dependency, event_update: event.EventUpdate, event_get: models.Event = Depends(get_event_or_404)):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
-
-
+async def update_event(db: db_dependency, event_update: event.EventUpdate, event_get: models.Event = Depends(get_event_or_404)):
     """
         Update an individual event.
     """
@@ -64,10 +54,7 @@ async def update_event(employee_role: user_dependency, db: db_dependency, event_
     return eventservice.update(db_session=db, event_update=event_update, mact=event_get.mact)
 
 @router.delete("/{mact}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_event(employee_role: user_dependency, db: db_dependency, event_get: models.Event = Depends(get_event_or_404)):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
-
+async def delete_event(db: db_dependency, event_get: models.Event = Depends(get_event_or_404)):
     """
         Delete an individual event.
     """

@@ -10,12 +10,12 @@ def get(db_session: Session, mact: str):
     return db_session.query(models.Event).filter(models.Event.mact == mact).first()
 
 
-def get_multiple(db_session: Session, offset: int = 0, limit: int = 100, search: str = ""):
-    return db_session.query(models.Event.name.contains(search)).offset(offset).limit(limit).all()
+def get_multiple(db_session: Session, owner: int):
+    return db_session.query(models.Event).filter(models.Event.owner == owner).all()
 
 
-def create(db_session: Session, event: EventCreate):
-    db_obj = models.Event(**event.model_dump())
+def create(db_session: Session, event: EventCreate, owner: id):
+    db_obj = models.Event(**event.model_dump(), owner = owner)
     db_session.add(db_obj)
     db_session.commit()
     db_session.refresh(db_obj)

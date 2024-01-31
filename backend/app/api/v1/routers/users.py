@@ -8,12 +8,10 @@ from fastapi import status
 from app.schemas.user import UserOut, UserUpdate, UserCreateInfo, UserOutCreate, UserUpdateInfo
 from app.database import get_db
 from app.service.crud import userservice
-from app import models
 from app.service import passwordservice
 
 
 from ..dependencies.auth import get_current_user
-from ..dependencies.get_404 import get_user_or_404
 
 router = APIRouter()
 
