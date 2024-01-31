@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date
 from typing import Optional
-from .client import ClientOutEvent
+from .user import UserOut
 
 
 # Shared properties
@@ -32,7 +32,7 @@ class EventOut(BaseModel):
     name: str
     ngaybatdau: date
     ngayketthuc: date
-    owner_event: ClientOutEvent
+    owner_event: UserOut
 
 class EventOutOfDetail(BaseModel):
     mact: str

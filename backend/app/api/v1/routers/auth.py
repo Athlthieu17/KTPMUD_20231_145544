@@ -22,7 +22,7 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.')
     db.commit()
-    token = create_access_token(form_data.username, user.manguoidung, user.role, timedelta(minutes=settings.access_token_expire_minutes))
+    token = create_access_token(form_data.username, user.manguoidung, timedelta(minutes=settings.access_token_expire_minutes))
 
     return {'access_token': token, 'token_type': 'bearer'}
 

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from .client import ClientOutEvent
+from .user import UserOut
 
 
 # Shared properties

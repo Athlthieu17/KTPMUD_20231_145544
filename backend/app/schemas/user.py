@@ -9,6 +9,7 @@ class UserBase(BaseModel):
     username: str
     password: str
     gender: Optional[bool]
+    address: str
     dateofbirth: Optional[date] = "2023-12-23"
     phonenumber: Optional[str]
     is_active: Optional[bool] = True
@@ -16,11 +17,10 @@ class UserBase(BaseModel):
 
 class UserCreateInfo(BaseModel):
     email: Optional[EmailStr] = None
-    fullname: Optional[str]
     username: str
     password: str
     gender: Optional[bool]
-    dateofbirth: Optional[date] = "2023-12-23"
+    address: str
     phonenumber: Optional[str]
 
 
@@ -28,7 +28,7 @@ class UserUpdateInfo(BaseModel):
     email: EmailStr
     fullname: str
     username: str
-    password: str
+    address: str
     gender: bool
     dateofbirth: date
     phonenumber: str
@@ -38,13 +38,13 @@ class UserOutCreate(BaseModel):
     manguoidung: int
     username: str
     email: Optional[EmailStr] = None
-    role: Optional[str] = None
 
 class UserOut(BaseModel):
     email: EmailStr
     fullname: str
     username: str
     password: str
+    address: str
     gender: bool
     dateofbirth: date
     phonenumber: str

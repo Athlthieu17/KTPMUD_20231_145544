@@ -28,8 +28,8 @@ def get_multiple(
     return db_session.query(User).offset(offset).limit(limit).all()
 
 
-async def create(db_session: Session, user_in: UserBase, role_ : str):
-    db_obj = User(**user_in.model_dump(), role = role_)
+async def create(db_session: Session, user_in: UserBase):
+    db_obj = User(**user_in.model_dump())
     db_session.add(db_obj)
     db_session.commit()
     db_session.refresh(db_obj)
@@ -53,14 +53,28 @@ def update_password(db_session: Session, user_in: User, user_change: UserUpdate)
 
     return "Update password success"
 
-def update(db_session: Session, user_change: UserUpdateInfo, manguoidung: int):
+def update_info(db_session: Session, user_change: UserUpdateInfo, manguoidung: int):
     user_query = db_session.query(User).filter(User.manguoidung == manguoidung)
-
-    user_change.password = get_password_hash(user_change.password)
 
     user_query.update(user_change.model_dump(), synchronize_session=False)
     db_session.commit()
     return user_query.first()
+
+def update_password(db_session: Session, user_in: User, user_change: UserUpdate):
+    if user_in is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
+
+    user_model = db_session.query(User).filter(User.manguoidung == user_in.get('manguoidung')).first()
+    if not verify_password(user_change.password, user_model.password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Not verify password')
+
+    user_model.password = get_password_hash(user_change.new_password)
+
+    db_session.add(user_model)
+    db_session.commit()
+    db_session.refresh(user_model)
+
+    return "Update password success"
 
 
 def delete(db_session: Session, manguoidung_: int):
