@@ -5,6 +5,9 @@ from sqlalchemy.orm import Session
 from app import models
 from app.schemas.event import EventCreate, EventOut, EventUpdate
 
+def get(db_session: Session, mact: str):
+    return db_session.query(models.Event).filter(models.Event.mact == mact).all()
+
 
 def get_by_user(db_session: Session, mact: str, owner: int):
     return db_session.query(models.Event).filter(models.Event.mact == mact).filter(models.Event.owner == owner).first()
