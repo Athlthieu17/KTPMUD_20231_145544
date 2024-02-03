@@ -7,10 +7,7 @@ import axios from "axios";
 
 localStorage.setItem("changepassSuccess", true);
 
-var count = 0;
-
 const removeErrMsg = () => {
-  count = 0;
   document.querySelectorAll("#errmsg")?.forEach((e) => e.remove());
 };
 

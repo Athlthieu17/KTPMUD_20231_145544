@@ -5,7 +5,7 @@ import TextField from "../ui/TextField";
 import Button from "../ui/Button";
 import axios from "axios";
 
-localStorage.setItem("changepassSuccess", true);
+localStorage.setItem("createeventSuccess", true);
 
 const removeErrMsg = () => {
   document.querySelectorAll("#errmsg")?.forEach((e) => e.remove());
@@ -13,9 +13,11 @@ const removeErrMsg = () => {
 
 function ModalCreateEvent({ isOpen, onClose, ...other }) {
   const [form, setForm] = useState({
-    passold: "",
-    passnew: "",
-    cfpassnew: "",
+    id: "",
+    name: "",
+    dateStart: "",
+    dateEnd: "",
+    detail: "",
   });
 
   const handleOnChange = (key, value) => {
@@ -26,37 +28,34 @@ function ModalCreateEvent({ isOpen, onClose, ...other }) {
     });
   };
 
-  const handleChangePass = async () => {
-    // if (form.cfpassnew !== form.passnew) {
-    //   localStorage.setItem("changepassSuccess", false);
-    // } else {
-    //   try {
-    //     await axios
-    //       .put(
-    //         "http://localhost:8000/api/v1/users/change_password/",
-    //         {
-    //           password: form.passold,
-    //           new_password: form.passnew,
-    //         },
-    //         {
-    //           headers: {
-    //             Authorization: "Bearer " + localStorage.getItem("token"),
-    //           },
-    //         }
-    //       )
-    //       .then((res) => {
-    //         if (res?.statusText === "OK") {
-    //           localStorage.setItem("changepassSuccess", true);
-    //           window.location.reload();
-    //           localStorage.removeItem("changepassSuccess");
-    //         } else {
-    //           localStorage.setItem("changepassSuccess", false);
-    //         }
-    //       });
-    //   } catch (error) {
-    //     localStorage.setItem("changepassSuccess", false);
-    //   }
-    // }
+  const handleCreateEvent = async () => {
+    try {
+      await axios
+        .post(
+          "http://localhost:8000/api/v1/event",
+          {
+            mact: form.id,
+            name: form.name,
+            ngaybatdau: form.dateStart,
+            ngayketthuc: form.dateEnd,
+            detail: form.detail
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          if (res?.statusText === "OK" || res?.statusText === "Created") {
+            localStorage.setItem("createeventSuccess", true);
+          } else {
+            localStorage.setItem("createeventSuccess", false);
+          }
+        });
+    } catch (error) {
+      localStorage.setItem("createeventSuccess", false);
+    }
   };
 
   return (
@@ -70,29 +69,30 @@ function ModalCreateEvent({ isOpen, onClose, ...other }) {
           <div className="form-login" id="form">
             <TextField
               title={"Mã sự kiện"}
-              value={form.username}
-              onChange={(e) => handleOnChange("passold", e.target.value)}
+              value={form.id}
+              onChange={(e) => handleOnChange("id", e.target.value)}
             />
             <TextField
               title={"Tên sự kiện"}
-              value={form.username}
-              onChange={(e) => handleOnChange("passold", e.target.value)}
+              value={form.name}
+              onChange={(e) => handleOnChange("name", e.target.value)}
             />
             <TextField
               title={"Ngày bắt đầu"}
-              value={form.username}
-              onChange={(e) => handleOnChange("passold", e.target.value)}
+              value={form.dateStart}
+              onChange={(e) => handleOnChange("dateStart", e.target.value)}
             />
             <TextField
               title={"Ngày kết thúc"}
-              value={form.username}
-              onChange={(e) => handleOnChange("passold", e.target.value)}
+              value={form.dateEnd}
+              onChange={(e) => handleOnChange("dateEnd", e.target.value)}
             />
             <TextField
               title={"Ghi chú"}
-              value={form.username}
-              onChange={(e) => handleOnChange("cfpassnew", e.target.value)}
+              value={form.detail}
+              onChange={(e) => handleOnChange("detail", e.target.value)}
             />
+            <div id="formCreateEvent"></div>
           </div>
           <div className="form-action-change-pass">
             <Button
@@ -104,7 +104,7 @@ function ModalCreateEvent({ isOpen, onClose, ...other }) {
                 borderRadius: "10px",
                 marginTop: '10px',
               }}
-              onClick={async () => await handleChangePass()}
+              onClick={async () => await handleCreateEvent()}
             />
             <Button
               title={"Hủy"}

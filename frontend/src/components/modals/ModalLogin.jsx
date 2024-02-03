@@ -9,6 +9,8 @@ localStorage.setItem("loginSuccess", true);
 localStorage.setItem("registerSuccess", true);
 localStorage.setItem("changepassSuccess", true);
 localStorage.setItem("updateuserSuccess", true);
+localStorage.setItem("updateeventSuccess", true);
+localStorage.setItem("createeventSuccess", true);
 
 const localStore = localStorage.setItem;
 
@@ -24,17 +26,59 @@ localStorage.setItem = function (key, value) {
 var count = 0;
 var count_changepass = 0;
 var count_updateuser = 0;
+var count_updateevent = 0;
+var count_createevent = 0;
 
 const removeErrMsg = (form = "loginSuccess") => {
   if (form === "loginSuccess") count = 0;
   if (form === "changepassSuccess") count_changepass = 0;
   if (form === "updateuserSuccess") count_updateuser = 0;
+  if (form === "updateeventSuccess") count_updateevent = 0;
+  if (form === "createeventSuccess") count_createevent = 0;
   document.querySelectorAll("#errmsg")?.forEach((e) => e.remove());
 };
 
 const localStoreHandler = function (e) {
+  if (e.key === "createeventSuccess") {
+    if (e.value === false) {
+      console.log(count_createevent);
+      count_createevent = count_createevent + 1;
+
+      if (count_createevent === 2) {
+        removeErrMsg("createeventSuccess");
+        document
+        .querySelector("#formCreateEvent")
+        .insertAdjacentHTML(
+          "afterbegin",
+          `<h4 class="error-message" id="errmsg">Sai thông tin!</h4>`
+        );
+        count_createevent = 0;
+      } else if (e.value === true) {
+        removeErrMsg("createeventSuccess");
+      }
+    }
+  }
+
+  if (e.key === "updateeventSuccess") {
+    if (e.value === false) {
+      count_updateevent = count_updateevent + 1;
+      
+      if (count_updateevent === 2) {
+        removeErrMsg("updateeventSuccess");
+        document
+        .querySelector("#formUpdateEvent")
+        .insertAdjacentHTML(
+          "afterbegin",
+          `<h4 class="error-message" id="errmsg">Sai thông tin!</h4>`
+        );
+        count_updateevent = 0;
+      } else if (e.value === true) {
+        removeErrMsg("updateeventSuccess");
+      }
+    }
+  }
+
   if (e.key === "updateuserSuccess") {
-    console.log(count_changepass);
     if (e.value === false) {
       count_changepass = count_changepass + 1;
 
@@ -54,7 +98,6 @@ const localStoreHandler = function (e) {
   }
 
   if (e.key === "changepassSuccess") {
-    console.log(count_changepass);
     if (e.value === false) {
       count_changepass = count_changepass + 1;
 

@@ -44,7 +44,7 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
           }
         )
         .then((res) => {
-          if (res?.statusText === "OK") {
+          if (res?.statusText === "OK" || res?.statusText === "No Content") {
             localStorage.setItem("updateeventSuccess", true);
           } else {
             localStorage.setItem("updateeventSuccess", false);
@@ -105,9 +105,6 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
             </div>
           </div>
           <div id="formUpdateEvent">
-            <h4 class="error-message" id="errmsg">
-              Sai thông tin!
-            </h4>
           </div>
           <div className="list-button flex">
             <Button
