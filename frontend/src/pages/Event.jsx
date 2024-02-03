@@ -59,11 +59,15 @@ function Event() {
             {...item}
             onClose={() => {
               setIsOpen(false);
+              window.location.reload();
             }}
           />
         )}
         {isOpenCreate && (
-          <ModalCreateEvent isOpen={isOpenCreate} onClose={() => setIsOpenCreate(false)} />
+          <ModalCreateEvent isOpen={isOpenCreate} onClose={() => {
+            setIsOpenCreate(false);
+            window.location.reload();
+          }} />
         )}
       </div>
     </div>

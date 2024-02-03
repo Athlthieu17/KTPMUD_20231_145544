@@ -8,7 +8,7 @@ const Card = ({ id, key, thumbnail, name, time, onClick } )  =>{
       <div className="wrap-content">
         <div className="card__content flex card__content-time">
           <h2 className="card__name">{name}</h2>
-          <p className="card__time">ma so</p>
+          <p className="card__time">{id}</p>
         </div>
         <div className="card__content">
           <p>{time}</p>

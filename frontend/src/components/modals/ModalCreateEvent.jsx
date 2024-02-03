@@ -61,7 +61,7 @@ function ModalCreateEvent({ isOpen, onClose, ...other }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal modal-login">
+      <div className="modal modal-login" styles={{ width: '700px' }}>
         <button className="modal-close" onClick={onClose}>
           &times;
         </button>
@@ -69,50 +69,25 @@ function ModalCreateEvent({ isOpen, onClose, ...other }) {
           <h1>Tạo sự kiện</h1>
           <div className="form-login" id="form">
             <TextField
+              title={"Mã sự kiện"}
+              value={form.username}
+              onChange={(e) => handleOnChange("passold", e.target.value)}
+            />
+            <TextField
               title={"Tên sự kiện"}
               value={form.username}
               onChange={(e) => handleOnChange("passold", e.target.value)}
             />
-            <div className="flex-input">
-              <div className="item-form">
-                <div flexrow="true">
-                  <TextField
-                    title={"Mã chủ sở hữu"}
-                    value={form.username}
-                    onChange={(e) => handleOnChange("passold", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="item-form">
-                <div flexrow="true">
-                  <TextField
-                    title={"Mã sự kiện"}
-                    value={form.username}
-                    onChange={(e) => handleOnChange("passold", e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex-input">
-              <div className="item-form">
-                <div flexrow="true">
-                  <TextField
-                    title={"Ngày bắt đầu"}
-                    value={form.username}
-                    onChange={(e) => handleOnChange("passold", e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="item-form">
-                <div flexrow="true">
-                  <TextField
-                    title={"Ngày kết thúc"}
-                    value={form.username}
-                    onChange={(e) => handleOnChange("passold", e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
+            <TextField
+              title={"Ngày bắt đầu"}
+              value={form.username}
+              onChange={(e) => handleOnChange("passold", e.target.value)}
+            />
+            <TextField
+              title={"Ngày kết thúc"}
+              value={form.username}
+              onChange={(e) => handleOnChange("passold", e.target.value)}
+            />
             <TextField
               title={"Ghi chú"}
               value={form.username}

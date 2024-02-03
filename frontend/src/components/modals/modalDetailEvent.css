@@ -18,7 +18,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     padding: 20px;
     max-width: 65%;
-    width: 100%;
+    /* width: 100%; */
     position: relative;
   }
   
@@ -85,7 +85,7 @@
 
   .card-modal__item .card-modal__img{
     width: 340px;
-height: 254px;
+height: 230px;
 border-radius: 10px;
   }
 

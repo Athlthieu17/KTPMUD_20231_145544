@@ -60,18 +60,18 @@ async def get_all_event(user_in: user_dependency, db: db_dependency):
 
 
 @router.put("/{mact}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_event(db: db_dependency, event_update: event.EventUpdate, event_get: models.Event = Depends(get_event_or_404)):
+async def update_event(db: db_dependency, event_update: event.EventUpdate, mact: str):
     """
         Update an individual event.
     """
 
-    return eventservice.update(db_session=db, event_update=event_update, mact=event_get.mact)
+    return eventservice.update(db_session=db, event_update=event_update, mact=mact)
 
 @router.delete("/{mact}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_event(user: user_dependency, db: db_dependency, event_get: models.Event = Depends(get_event_or_404)):
+async def delete_event(user: user_dependency, db: db_dependency, mact: str):
     """
         Delete an individual event.
     """
     if user.get('username') == 'admin':
-        return eventservice.delete(db_session=db, mact=event_get.mact)
+        return eventservice.delete(db_session=db, mact=mact)
 
