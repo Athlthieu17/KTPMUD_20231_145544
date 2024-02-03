@@ -2,7 +2,7 @@ import { PropsWithChildren, useEffect } from "react";
 import MainLayout from "../Layout";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "./AuthProvider";
+import { useAuth } from "./AuthContext";
 
 export default function ProtectedRoute({ children, isShowAction }) {
   const user = useAuth();

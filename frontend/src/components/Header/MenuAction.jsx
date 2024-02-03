@@ -12,13 +12,11 @@ function MenuAction() {
     const [option, setOption] = useState(STATUS.ALL);
     const navigate = useNavigate();
 
-    console.log(option);
-
   return (
     <div className="flex section">
             <div className="section-item flex" style={{gap : '20px'}}>
               <Button
-                title={"Trang chu"}
+                title={"Trang chủ"}
                 type={"button"}
                 styles={{ borderRadius: '5px', backgroundColor: '#fff' }}
                 onClick={() => navigate('/',{replace: true})}
@@ -27,7 +25,7 @@ function MenuAction() {
             </div>
             <div className="section-item">
               <Button
-                title={"Ho so ca nhan"}
+                title={"Hồ sơ cá nhân"}
                 styles={{ borderRadius: '5px', backgroundColor: '#fff' }}
                 type={"button"}
                 onClick={() => navigate('/profile',{replace: true})}

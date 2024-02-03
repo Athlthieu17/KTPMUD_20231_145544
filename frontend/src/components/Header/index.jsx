@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import "./header.css";
 import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthProvider";
+import { useAuth } from "../AuthContext";
 import MenuAction from "./MenuAction";
 
 function Header({ isShowAction = false }) {
@@ -13,6 +13,11 @@ function Header({ isShowAction = false }) {
   const handleRedirectPage = () => {
     navigate("/event", { replace: true });
   };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  }
 
   return (
     <>
@@ -24,17 +29,17 @@ function Header({ isShowAction = false }) {
         </div>
         <div className="header-item flex">
           <div className="header-item__contact">
-            <Icon icon="tabler:phone" />
-            <span>+84 987 654 321</span>
+            {user?.phone && (<Icon icon="tabler:phone" />)}
+            <span>{user?.phone}</span>
           </div>
           <div className="header-item__contact">
-            <Icon icon="tabler:mail" />
-            <span>html@gmail.com</span>
+            {user?.email && (<Icon icon="tabler:mail" />)}
+            <span>{user?.email}</span>
           </div>
-          {user ? (
+          {user.username ? (
             <div className="header-item__contact">
-              <img src={user?.image} alt={user?.userName} />
-              <span>{user?.userName}</span>
+              <img src={user?.image} alt={user?.username} />
+              <span>{user?.username}</span>
             </div>
           ) : (
             <div className="header-item__contact">
@@ -56,11 +61,24 @@ function Header({ isShowAction = false }) {
           </div>
           {!isShowAction && (
             <div className="section-item">
-              <Button
-                title={"Quan ly su kien"}
-                type={"button"}
-                onClick={handleRedirectPage}
-              />
+              <div className="header-item flex">
+                <div className="header-item__contact">
+                <Button
+                  title={"Quản lý sự kiện"}
+                  type={"button"}
+                  onClick={handleRedirectPage}
+                />
+                </div>
+                {user?.username && (
+                  <div className="header-item__contact" style={{ marginLeft: '10px' }}>
+                    <Button
+                      title={"Đăng xuất"}
+                      type={"button"}
+                      onClick={handleLogout}
+                    />
+                  </div>)
+                }
+              </div>
             </div>
           )}
         </div>

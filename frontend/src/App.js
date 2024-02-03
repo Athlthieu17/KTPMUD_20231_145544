@@ -3,7 +3,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthProvider, { useAuth } from "./components/AuthProvider";
+import { AuthProvider } from "./components/AuthContext";
 import Event from "./pages/Event";
 import Profile from "./pages/Profile";
 
@@ -41,21 +41,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-
-  const user =  useAuth();
-
-  console.log(user);
-
   return (
     <div className="App">
-      <AuthProvider isSignedIn={true}>
-      <RouterProvider router={router} />
-      {
-        user && user.id &&(
-          <ModalLogin/>
-        )
-      }
-    </AuthProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        {
+            !localStorage.getItem("token") && <ModalLogin/>
+        }
+      </AuthProvider>
     </div>
   );
 }

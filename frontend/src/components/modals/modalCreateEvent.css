@@ -1,0 +1,27 @@
+.modal-login {
+    width: 500px;
+    background-color: var(--white-color);
+}
+
+.modal-login .form-login input {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.modal-login .form-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-login .form-action-change-pass {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 8px;
+}
