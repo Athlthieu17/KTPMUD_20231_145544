@@ -17,43 +17,35 @@ db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=detail_event.DetailOut)
-async def create_detail_event(db: db_dependency, employee_role: user_dependency, detail_create: detail_event.DetailEventCreate):
-    if employee_role is None or employee_role.get('role') != 'employee':
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
+async def create_detail_event(db: db_dependency, detail_create: detail_event.DetailEventCreate, user: user_dependency):
+
     detail_event = detaileventservice.create(db_session=db,detail_event=detail_create)
 
     return detail_event
 
 
-@router.get("/{mactct}", status_code=status.HTTP_200_OK, response_model=detail_event.DetailOut)
+@router.get("/{mact}", status_code=status.HTTP_200_OK)
 def get_detail_of_event(db: db_dependency,
-                        user_role: user_dependency,
-                        detail_event_get: models.DetailEvent = Depends(get_detail_event_or_404)):
-    if user_role is None or user_role.get('role') != 'employee' or user_role:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
+                        mact: str, user: user_dependency):
 
-    return detaileventservice.get(db_session=db, mactct=detail_event_get.mactct)
+    return detaileventservice.get_by_mact(db_session=db, owner_event=mact)
 
 
 @router.put("/update_info/{mactct}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_detail_event(db: db_dependency,
-                              employee_role: user_dependency,
+                              user: user_dependency,
                               detail_event_update: detail_event.DetailEventUpdate,
                               detail_event_get: models.DetailEvent = Depends(get_detail_event_or_404)
                               ):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
 
     return detaileventservice.update(db_session=db, detail_event_update=detail_event_update ,mactct=detail_event_get.mactct)
 
 
 @router.delete("/update_info/{mactct}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_detail_event(db: db_dependency,
-                              employee_role: user_dependency,
+                              user: user_dependency,
                               detail_event_get: models.DetailEvent = Depends(get_detail_event_or_404),
                               ):
-    if employee_role is None or employee_role.get('role') != "employee":
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
 
     return detaileventservice.delete(db_session=db, mactct=detail_event_get.mactct)
 
