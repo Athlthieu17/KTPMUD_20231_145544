@@ -8,12 +8,10 @@ from fastapi import status
 from app.schemas.user import UserOut, UserUpdate, UserCreateInfo, UserOutCreate, UserUpdateInfo
 from app.database import get_db
 from app.service.crud import userservice
-from app import models
 from app.service import passwordservice
 
 
 from ..dependencies.auth import get_current_user
-from ..dependencies.get_404 import get_user_or_404
 
 router = APIRouter()
 
@@ -47,11 +45,15 @@ async def create_user(db: db_dependency, users: UserCreateInfo):
 
 @router.get("/information", status_code= status.HTTP_200_OK)
 async def get_info_user(user: user_dependency, db: db_dependency):
-    if user is None:
-        raise HTTPException(status_code= status.HTTP_401_UNAUTHORIZED, detail='Authentication Failed')
-
     user_get = userservice.get(db_session=db, manguoidung_=user.get('manguoidung'))
     return user_get
+
+
+@router.get("/all_user_by_admin", status_code=status.HTTP_200_OK)
+async def get_all_infor_user(user: user_dependency, db: db_dependency):
+    if user.get('username') == "admin":
+        return userservice.get_multiple(db_session=db)
+
 
 
 @router.put("/change_password", status_code=status.HTTP_200_OK)

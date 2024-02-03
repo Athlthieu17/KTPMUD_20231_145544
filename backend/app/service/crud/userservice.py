@@ -24,8 +24,8 @@ def get_by_phonenumber(db_session: Session, phonenumber: str) -> Optional[User]:
 
 def get_multiple(
     db_session: Session, *, offset: int = 0, limit: int = 100
-) -> List[User]:
-    return db_session.query(User).offset(offset).limit(limit).all()
+) -> List[UserBase]:
+    return db_session.query(User).where(User.username != "admin").offset(offset).limit(limit).all()
 
 
 async def create(db_session: Session, user_in: UserBase):

@@ -24,7 +24,12 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     db.commit()
     token = create_access_token(form_data.username, user.manguoidung, timedelta(minutes=settings.access_token_expire_minutes))
 
-    return {'access_token': token, 'token_type': 'bearer'}
+    if user:
+        if user.username == "admin":
+            return {'access_token': token, 'token_type': 'bearer', 'role': 'admin'}
+        else:
+            return {'access_token': token, 'token_type': 'bearer', 'role': 'user'}
+
 
 @router.post("/logout")
 def logout():
