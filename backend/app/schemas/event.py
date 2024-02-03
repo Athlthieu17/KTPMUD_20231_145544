@@ -26,12 +26,10 @@ class EventUpdate(BaseModel):
     ngayketthuc: date
     detail: str
 
-class EventOut(BaseModel):
-    mact: str
-    name: str
-    ngaybatdau: date
-    ngayketthuc: date
-    owner_event: UserOut
+class EventOut(EventBase):
+    detail: Optional[str] = None
+    class Config:
+        from_attributes = True
 
 class EventOutOfDetail(BaseModel):
     mact: str

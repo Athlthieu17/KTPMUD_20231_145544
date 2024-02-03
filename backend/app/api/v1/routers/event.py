@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, HTTPException, Depends
-from typing import Annotated
+from typing import Annotated, List
 from sqlalchemy.orm import Session
 
 
@@ -15,7 +15,7 @@ router = APIRouter()
 
 db_dependency = Annotated[Session, Depends(get_db)]
 user_dependency = Annotated[dict, Depends(get_current_user)]
-@router.post("", status_code= status.HTTP_201_CREATED)
+@router.post("", status_code= status.HTTP_201_CREATED, response_model=event.EventCreate)
 async def create_event(user_in: user_dependency, db: db_dependency, create_event_request: event.EventCreate):
     if eventservice.get(db_session=db, mact=create_event_request.mact):
         raise HTTPException(
@@ -27,22 +27,36 @@ async def create_event(user_in: user_dependency, db: db_dependency, create_event
 
 
 @router.get("/information/{mact}", status_code= status.HTTP_200_OK, response_model= event.EventOut)
-def get_event_by_mact(event_get: models.Event = Depends(get_event_or_404)):
-    return event_get
+def get_event_by_mact(user_in: user_dependency, db: db_dependency, mact: str):
+    if (user_in.get('username') == "admin"):
+        event = eventservice.get_by_admin(db_session=db, mact=mact)
+        if not event:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Specified event was not found.",
+            )
+    else:
+        event = eventservice.get_by_user(db_session=db, mact=mact, owner=user_in.get('manguoidung'))
+        if not event:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Specified event was not found.",
+            )
+
+    return event
+
+
 
 
 @router.get("/all_event", status_code=status.HTTP_200_OK)
 async def get_all_event(user_in: user_dependency, db: db_dependency):
 
-
-    all_event = eventservice.get_multiple(db_session=db, owner=user_in.get('manguoidung'))
+    if (user_in.get('username') == "admin"):
+        all_event = eventservice.get_multiple_by_admin(db_session=db)
+    else:
+        all_event = eventservice.get_multiple_by_user(db_session=db, owner=user_in.get('manguoidung'))
 
     return all_event
-
-
-@router.get("/all/{mact}", status_code=status.HTTP_200_OK)
-def get_all_detail_of_event(db: db_dependency, mact: str):
-    return detaileventservice.get_by_mact(db_session=db, owner_event=mact)
 
 
 @router.put("/{mact}", status_code=status.HTTP_204_NO_CONTENT)
@@ -54,9 +68,10 @@ async def update_event(db: db_dependency, event_update: event.EventUpdate, event
     return eventservice.update(db_session=db, event_update=event_update, mact=event_get.mact)
 
 @router.delete("/{mact}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_event(db: db_dependency, event_get: models.Event = Depends(get_event_or_404)):
+async def delete_event(user: user_dependency, db: db_dependency, event_get: models.Event = Depends(get_event_or_404)):
     """
         Delete an individual event.
     """
-    return eventservice.delete(db_session=db, mact=event_get.mact)
+    if user.get('username') == 'admin':
+        return eventservice.delete(db_session=db, mact=event_get.mact)
 
