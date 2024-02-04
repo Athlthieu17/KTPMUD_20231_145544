@@ -3,12 +3,19 @@ import "./modalDetailEvent.css";
 import TextField from "../ui/TextField";
 import Button from "../ui/Button";
 import axios from "axios";
+import ModalCreateDetailEvent from "./ModalCreateDetailEvent";
+import ModalUpdateDetailEvent from "./ModalUpdateDetailEvent";
+
+var dataDetail = [];
 
 const removeErrMsg = () => {
   document.querySelectorAll("#errmsg")?.forEach((e) => e.remove());
 };
 
 function ModalDetailEvent({ isOpen, onClose, ...other }) {
+  const [isOpenCreateDetail, setIsOpenCreateDetail] = useState(false);
+  const [isOpenUpdateDetail, setIsOpenUpdateDetail] = useState(false);
+
   const [form, setForm] = useState({
     note: other?.note,
     name: other?.name,
@@ -26,6 +33,26 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
     });
   };
 
+  axios
+    .get("http://localhost:8000/api/v1/detail_event/" + form.id, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+    .then((res) => {
+      res.data.forEach((e) => {
+        dataDetail.push({
+          end_date: e.end_date,
+          mactct: e.mactct,
+          detail: e.detail,
+          location: e.location,
+          songuoithamgia: e.songuoithamgia,
+          start_date: e.start_date,
+          owner_event: e.owner_event,
+        });
+      });
+    });
+
   const handleUpdateEvent = async () => {
     try {
       await axios
@@ -35,7 +62,7 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
             name: form.name,
             ngaybatdau: form.dateStart,
             ngayketthuc: form.dateEnd,
-            detail: form.note
+            detail: form.note,
           },
           {
             headers: {
@@ -104,11 +131,35 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
               </div>
             </div>
           </div>
-          <div id="formUpdateEvent">
-          </div>
+          <div id="formUpdateEvent"></div>
           <div className="list-button flex">
             <Button
-              title={"Cancel"}
+              title={"Chi tiết"}
+              styles={{
+                backgroundColor: "green",
+                color: "#fff",
+                margin: "-456px",
+              }}
+              type={"button"}
+              onClick={() => {
+                if (dataDetail.length === 0) alert("Không có sự kiện con!");
+                else setIsOpenUpdateDetail(true);
+              }}
+            />
+            <Button
+              title={"Thêm sự kiện con"}
+              styles={{
+                backgroundColor: "#409FC8",
+                color: "#fff",
+                margin: "-380px",
+              }}
+              type={"button"}
+              onClick={() => {
+                setIsOpenCreateDetail(true);
+              }}
+            />
+            <Button
+              title={"Hủy"}
               styles={{
                 backgroundColor: "red",
                 color: "#fff",
@@ -117,7 +168,7 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
               onClick={onClose}
             />
             <Button
-              title={"Save"}
+              title={"Lưu"}
               type={"button"}
               styles={{
                 backgroundColor: "#409FC8",
@@ -128,6 +179,44 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
           </div>
         </div>
       </div>
+      {isOpenCreateDetail && (
+        <ModalCreateDetailEvent
+          {...form}
+          isOpen={isOpenCreateDetail}
+          onClose={() => {
+            setIsOpenCreateDetail(false);
+            dataDetail = [];
+            axios
+              .get("http://localhost:8000/api/v1/detail_event/" + form.id, {
+                headers: {
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+              })
+              .then((res) => {
+                res.data.forEach((e) => {
+                  dataDetail.push({
+                    end_date: e.end_date,
+                    mactct: e.mactct,
+                    detail: e.detail,
+                    location: e.location,
+                    songuoithamgia: e.songuoithamgia,
+                    start_date: e.start_date,
+                    owner_event: e.owner_event,
+                  });
+                });
+              });
+          }}
+        />
+      )}
+      {isOpenUpdateDetail && (
+        <ModalUpdateDetailEvent
+          {...dataDetail}
+          isOpen={isOpenUpdateDetail}
+          onClose={() => {
+            setIsOpenUpdateDetail(false);
+          }}
+        />
+      )}
     </div>
   );
 }

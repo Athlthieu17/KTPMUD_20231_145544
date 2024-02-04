@@ -64,6 +64,11 @@
     margin-top: 20px;
   }
 
+  .button-update {
+    width: fit-content;
+    margin: 0 auto;
+  }
+
   .name-event h1{
     font-size: 20px;
     padding: 0 10px;

@@ -13,8 +13,6 @@ function Event() {
   const [isOpenCreate, setIsOpenCreate] = useState(false);
   const events = useSelector((state) => state.event.evens);
 
-  console.log(item);
-
   const handleOpenDetailEvent = (id) => {
     if (id) {
       setIsOpen(true);
