@@ -40,15 +40,13 @@ function ModalUpdateDetailEvent({ isOpen, onClose, ...other }) {
   const handleUpdateDetailEvent = async () => {
     try {
       await axios
-        .post(
-          "http://localhost:8000/api/v1/detail_event",
+        .put(
+          "http://localhost:8000/api/v1/detail_event/update_info/" + form.id,
           {
-            mactct: form.id,
             songuoithamgia: form.soluong,
             start_date: form.dateStart,
             end_date: form.dateEnd,
             location: form.location,
-            owner_event: other?.id,
           },
           {
             headers: {
@@ -57,15 +55,8 @@ function ModalUpdateDetailEvent({ isOpen, onClose, ...other }) {
           }
         )
         .then((res) => {
-          if (res?.statusText === "OK" || res?.statusText === "Created") {
+          if (res?.statusText === "OK" || res?.statusText === "No Content") {
             localStorage.setItem("createeventSuccess", true);
-            setForm({
-              id: "",
-              soluong: "",
-              dateStart: "",
-              dateEnd: "",
-              location: "",
-            });
           } else {
             localStorage.setItem("createeventSuccess", false);
           }

@@ -7,7 +7,9 @@ import ModalCreateDetailEvent from "./ModalCreateDetailEvent";
 import ModalUpdateDetailEvent from "./ModalUpdateDetailEvent";
 
 var dataDetail = [];
-
+const emptyData = () => {
+  dataDetail.length = 0;
+}
 const removeErrMsg = () => {
   document.querySelectorAll("#errmsg")?.forEach((e) => e.remove());
 };
@@ -143,7 +145,9 @@ function ModalDetailEvent({ isOpen, onClose, ...other }) {
               type={"button"}
               onClick={() => {
                 if (dataDetail.length === 0) alert("Không có sự kiện con!");
-                else setIsOpenUpdateDetail(true);
+                else {
+                  setIsOpenUpdateDetail(true);
+                }
               }}
             />
             <Button
